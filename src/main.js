@@ -2,10 +2,19 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
+
+const VuexPersist = new VuexPersistence({
+  key:'fhir_viewr_',
+  storage: window.localStorage,
+  module:[
+    'timeline'
+  ]
+})
 
 const timeline ={
   namespaced:true,
@@ -35,7 +44,8 @@ const timeline ={
 const store= new Vuex.Store({
   modules:{
     timeline: timeline
-  }
+  },
+  plugins:[VuexPersist.plugin]
 })
 
 new Vue({
