@@ -21,15 +21,14 @@
                     prepend-icon="mdi-camera"
                 ></v-file-input>
 
-                <!-- evento não está funcionando -->
-                <!-- <v-btn @='send()' icon x-large >
+                <v-btn @click='send()' icon x-large >
                     <v-icon >mdi-send</v-icon>
-                </v-btn> -->
+                </v-btn>
             </v-app-bar>
         </div>
 
         <div class='post-container'>
-            <div v-for='post in posts.slice().reverse() ' :key='post'>
+            <div v-for='post in getPosts.slice().reverse() ' :key='post'>
                 <PostContainer :postProp='post'/>
             </div>
         </div>
@@ -59,6 +58,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import PostContainer from "./components/PostContainer.vue"
 
 export default{
@@ -68,13 +68,7 @@ export default{
     data (){
         return{
             name: 'Handmade',
-            posts: [
-                {user: 'user0', texto:'Panda Amigurumi',imagem:"https://img.elo7.com.br/product/original/2C1432A/receita-urso-panda-amigurumi-em-pdf.jpg"}, // imagem: null
-                {user: 'user2', texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',imagem:undefined},
-            ],
             field:'',
-            // url:undefined,
-            // fileimg: null,
             rules: [value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
         }
     },
@@ -85,7 +79,8 @@ export default{
                 texto: this.field,
                 imagem: this.url
             }
-            this.posts.push(post)
+            // this.posts.push(post)
+            this.$store.dispatch('timeline/sendPosts',post)
             this.field= ''
             this.url = undefined
         },
@@ -94,7 +89,10 @@ export default{
             this.url = URL.createObjectURL(file);
             console.log(this.url);
         }
-    }
+    },
+    computed:{
+        ...mapGetters('timeline',['getPosts'])
+    },
 }
 </script>
 
