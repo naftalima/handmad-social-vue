@@ -2,17 +2,25 @@
     <v-card
         raised
         class='mx-auto'
-    >
-
-         <!-- v-if="url" :src="url" -->
+    >         
         <v-img
             v-if="postProp.imagem" :src="postProp.imagem"
             class="white--text align-end"
             height="200px"
         >
+            <v-card-title 
+                class='font-weight-bold orange--text'
+            >
+                {{postProp.user ?  postProp.user : 'Anônimo'}}
+            </v-card-title>
         </v-img>
 
-        <v-card-title class='font-weight-bold orange--text'>{{postProp.user ?  postProp.user : 'Anônimo'}}</v-card-title>
+        <v-card-title 
+            v-else
+            class='font-weight-bold orange--text'
+        >
+            {{postProp.user ?  postProp.user : 'Anônimo'}}
+        </v-card-title>
 
         <v-card-text class="text--primary">{{postProp.texto}}</v-card-text>
 

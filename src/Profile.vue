@@ -1,44 +1,44 @@
 <template>
 <v-main>
-    <v-app-bar fixed dark color="#88498F">
-        <v-icon icon x-large>mdi-hand</v-icon>
-        <span>{{name}}</span>
-    </v-app-bar>
+    <div class="navigation-bar">
+        <NavigationBar/>
+    </div>
+
+    <div class="profile-card">
+        <v-card >
+            <!-- <v-row justify="center">
+                <v-col>  -->
+                    <v-avatar class="profile" size="120px" tile>
+                        <v-img src="https://i.pinimg.com/originals/65/3d/01/653d01c977ea7ce63d9eb06f5a273d7d.jpg" alt="Profile Picture"></v-img>
+                    </v-avatar>
+                <!-- </v-col>
+                <v-col > -->
+                    <v-list item>
+                        <v-list-item-content>
+                            <v-list-item-title class="title">Hermione Granger</v-list-item-title>
+                            <v-list-item-subtitle> Hogwarts Student </v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list>
+                <!-- </v-col>
+            </v-row> -->
+        </v-card>
+    </div>
 
 
-    <v-bottom-navigation
-        :value="activeBtn"
-        color="#88498F"
-        fixed bottom
-    >
-        <v-btn>
-        <span>Search</span>
-        <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn @click="openFeed()">
-        <span>Feed</span>
-        <v-icon>mdi-hand-right</v-icon>
-        </v-btn>
-
-        <v-btn @click="openProfile()">
-        <span>Profile</span>
-        <v-icon>mdi-face-profile-woman</v-icon>
-        </v-btn>
-    </v-bottom-navigation>
 </v-main>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import NavigationBar from "./components/NavigationBar.vue"
 
 export default{
-    methods:{
-        openProfile(){
-            this.$router.push('profile')
-        },
-        openFeed(){
-            this.$router.push('/')
+    components:{
+        NavigationBar
+    },
+    data (){
+        return{
+            name: 'Handmade',
         }
     },
     computed:{
@@ -48,5 +48,10 @@ export default{
 </script>
 
 <style>
+.profile-card{
+    width: 100%;
+    padding-top: 64px;
+    padding-bottom: 56px;
 
+} 
 </style>

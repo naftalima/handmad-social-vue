@@ -1,12 +1,13 @@
 <template>
     <v-main>
-        <v-app-bar fixed dark color="#88498F">
-            <v-icon icon x-large>mdi-hand</v-icon>
-            <span>{{name}}</span>
-        </v-app-bar>
+            
+        <div class="navigation-bar">
+            <NavigationBar/>
+        </div>
 
         <div class='input'>
             <v-app-bar >
+                
                 <v-text-field 
                     @keyup.enter='send()' 
                     v-model='field' 
@@ -23,6 +24,7 @@
                 <v-btn @click='send()' icon x-large >
                     <v-icon >mdi-send</v-icon>
                 </v-btn>
+
             </v-app-bar>
         </div>
 
@@ -32,36 +34,18 @@
             </div>
         </div>
 
-        <v-bottom-navigation
-            :value="activeBtn"
-            color="#88498F"
-            fixed bottom
-        >
-            <v-btn>
-            <span>Search</span>
-            <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-
-            <v-btn>
-            <span>Feed</span>
-            <v-icon>mdi-hand-right</v-icon>
-            </v-btn>
-
-            <v-btn @click="openProfile()">
-            <span>Profile</span>
-            <v-icon>mdi-face-profile-woman</v-icon>
-            </v-btn>
-        </v-bottom-navigation>
     </v-main>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 import PostContainer from "./components/PostContainer.vue"
+import NavigationBar from "./components/NavigationBar.vue"
 
 export default{
      components:{
-        PostContainer
+        PostContainer,
+        NavigationBar
     },
     data (){
         return{
@@ -78,17 +62,14 @@ export default{
                 imagem: this.url
             }
             // this.posts.push(post)
-            this.$store.dispatch('timeline/sendPosts',post)
-            this.field= ''
-            this.url = undefined
+            this.$store.dispatch('timeline/sendPosts',post);
+            this.field= '';
+            this.url = undefined;
         },
         onFileChange(e) {
             const file = e;
             this.url = URL.createObjectURL(file);
             console.log(this.url);
-        },
-        openProfile(){
-            this.$router.push('profile')
         }
     },
     computed:{
@@ -107,7 +88,7 @@ export default{
 .input{
     width: 100%;
     padding-top: 64px;
-    /* padding-bottom: 56px; */
+    padding-bottom: 56px;
 }
 
 </style>

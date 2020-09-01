@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Feed from './Feed.vue'
 import Profile from './Profile.vue'
+import Search from './Search.vue'
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
@@ -61,6 +62,10 @@ const routes=[
   {
     path:'/profile/',
     component:Profile
+  },
+  {
+    path:'/search/',
+    component:Search
   }
 ]
 
