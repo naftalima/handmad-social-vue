@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Feed from './Feed.vue'
+import Profile from './Profile.vue'
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
+import VueRouter from 'vue-router'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
+Vue.use(VueRouter)
 
 const VuexPersist = new VuexPersistence({
   key:'fhir_viewr_',
@@ -48,7 +52,25 @@ const store= new Vuex.Store({
   plugins:[VuexPersist.plugin]
 })
 
+
+const routes=[
+  {
+    path:'/',
+    component:Feed 
+  },
+  {
+    path:'/profile/',
+    component:Profile
+  }
+]
+
+
+const router = new VueRouter({
+  routes
+})
+
 new Vue({
+  router,
   store,
   vuetify,
   render: h => h(App)
