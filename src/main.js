@@ -73,22 +73,19 @@ const timeline = {
     posts: [
       {
         userName: 'ronron',
-        // userId: 2,
         postId: 0,
         texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',
         imagem: undefined
       },
       {
         userName: 'harrypttr',
-        // userId:1,
         postId:1,
         texto: 'Hedwig Amigurumi',
         imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
       },
       {
         userName: 'me',
-        // userId:0,
-        postId:1,
+        postId:2,
         texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
         imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
       },
@@ -105,11 +102,18 @@ const timeline = {
   actions: {
     sendPosts({ commit }, post) {
       commit('addPost', post)
+    },
+    deletePosts({commit},  post){
+      commit('delPost',post)
     }
   },
   mutations: {
     addPost(state, post) {
       state.posts.push(post)
+    },
+    delPost(state,post){
+      var index = state.posts.findIndex(p => p.postId == post.postId)
+      state.posts.splice(index,1)
     }
   }
 }

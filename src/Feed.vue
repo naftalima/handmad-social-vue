@@ -57,7 +57,7 @@ export default{
     },
     methods:{
         send(){
-            let count = 2;
+            let count = 3;
             let post = {
                 userName:'me',
                 postId: count,
