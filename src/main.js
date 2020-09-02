@@ -27,20 +27,20 @@ const users = {
   state: {
     user: [
       {
-        userName: 'Ron Weasley',
-        userId:2,
+        userName: 'ronron',
+        name:'Ron Weasley',
         bio: 'Sou um Weasley',
         profilePic: "https://i.ytimg.com/vi/RvdpcOwumlY/hqdefault.jpg"
       },
       {
-        userName: 'Harry Potter',
-        userId:1,
+        userName: 'harrypttr',
+        name:'Harry',
         bio: 'eu sou só harry',
         profilePic: "https://i.pinimg.com/originals/94/64/59/94645992bdb14a27ce21f8c3e792d9ba.jpg"
       },
       {
         userName: 'me',
-        userId:0,
+        name:'MIone',
         bio: 'hastag liberdade aos elfos',
         profilePic: "https://i.pinimg.com/originals/08/7b/7c/087b7c08e037a803ba77a2db24eb8cb0.jpg"
       }, 
@@ -72,22 +72,22 @@ const timeline = {
   state: {
     posts: [
       {
-        userName: 'Ron Weasley',
-        userId: 2,
+        userName: 'ronron',
+        // userId: 2,
         postId: 0,
         texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',
         imagem: undefined
       },
       {
-        userName: 'Harry Potter',
-        userId:1,
+        userName: 'harrypttr',
+        // userId:1,
         postId:1,
         texto: 'Hedwig Amigurumi',
         imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
       },
       {
         userName: 'me',
-        userId:0,
+        // userId:0,
         postId:1,
         texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
         imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
