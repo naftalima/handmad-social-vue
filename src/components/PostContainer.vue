@@ -10,16 +10,18 @@
         >
             <v-card-title 
                 class='font-weight-bold orange--text'
+                @click="openProfile(postProp.userName)"
             >
-                {{postProp.user ?  postProp.user : 'Anônimo'}}
+                {{postProp.userName ?  postProp.userName : 'Anônimo'}}
             </v-card-title>
         </v-img>
 
         <v-card-title 
             v-else
             class='font-weight-bold orange--text'
+            @click="openProfile(postProp.userName)"
         >
-            {{postProp.user ?  postProp.user : 'Anônimo'}}
+            {{postProp.userName ?  postProp.userName : 'Anônimo'}}
         </v-card-title>
 
         <v-card-text class="text--primary">{{postProp.texto}}</v-card-text>
@@ -33,7 +35,13 @@
 
 <script>
 export default {
-    props:['postProp']
+    props:['postProp'],
+    methods:{
+        openProfile(userNome){
+            this.$router.push(`/profile/${userNome}`)
+        }
+    }
+
 }
 
 

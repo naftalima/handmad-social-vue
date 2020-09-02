@@ -16,7 +16,7 @@
                 ></v-text-field>
 
                 <v-file-input 
-                    @change="onFileChange"
+                    v-model='file'
                     :rules="rules" accept="image/png, image/jpeg, imagebmp" 
                     prepend-icon="mdi-camera"
                 ></v-file-input>
@@ -29,7 +29,7 @@
         </div>
 
         <div class='post-container'>
-            <div v-for='post in getPosts.slice().reverse() ' :key='post'>
+            <div v-for='post in getPosts.slice().reverse() ' :key='post.name'>
                 <PostContainer :postProp='post'/>
             </div>
         </div>
@@ -43,33 +43,33 @@ import PostContainer from "./components/PostContainer.vue"
 import NavigationBar from "./components/NavigationBar.vue"
 
 export default{
-     components:{
+    components:{
         PostContainer,
         NavigationBar
     },
     data (){
         return{
             name: 'Handmade',
+            file: undefined,
             field:'',
             rules: [value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
         }
     },
     methods:{
         send(){
+            let count = 2;
             let post = {
-                user:'me',
+                userName:'me',
+                userId: 1,
+                postId: count,
                 texto: this.field,
-                imagem: this.url
-            }
+                imagem: this.file? URL.createObjectURL(this.file) :undefined
+            };
             // this.posts.push(post)
             this.$store.dispatch('timeline/sendPosts',post);
             this.field= '';
-            this.url = undefined;
-        },
-        onFileChange(e) {
-            const file = e;
-            this.url = URL.createObjectURL(file);
-            console.log(this.url);
+            this.file = undefined;
+            count++;
         }
     },
     computed:{

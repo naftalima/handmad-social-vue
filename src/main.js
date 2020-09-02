@@ -14,58 +14,127 @@ Vue.use(Vuex)
 Vue.use(VueRouter)
 
 const VuexPersist = new VuexPersistence({
-  key:'fhir_viewr_',
+  key: 'fhir_viewr_',
   storage: window.localStorage,
-  module:[
+  module: [
     'timeline'
   ]
 })
 
-const timeline ={
-  namespaced:true,
-  state:{
-    posts: [
-      {user: 'user0', texto:'Panda Amigurumi',imagem:"https://img.elo7.com.br/product/original/2C1432A/receita-urso-panda-amigurumi-em-pdf.jpg"}, // imagem: null
-      {user: 'user2', texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',imagem:undefined},
-  ]
+
+const users = {
+  namespaced: true,
+  state: {
+    user: [
+      {
+        userName: 'Ron Weasley',
+        userId:2,
+        bio: 'Sou um Weasley',
+        profilePic: "https://i.ytimg.com/vi/RvdpcOwumlY/hqdefault.jpg"
+      },
+      {
+        userName: 'Harry Potter',
+        userId:1,
+        bio: 'eu sou só harry',
+        profilePic: "https://i.pinimg.com/originals/94/64/59/94645992bdb14a27ce21f8c3e792d9ba.jpg"
+      },
+      {
+        userName: 'me',
+        userId:0,
+        bio: 'hastag liberdade aos elfos',
+        profilePic: "https://i.pinimg.com/originals/08/7b/7c/087b7c08e037a803ba77a2db24eb8cb0.jpg"
+      }, 
+    ]
   },
-  getters:{
+  getters: {
+    getUsers: state => {
+      return state.user
+    },
+    getUser: state => userNome => {
+      return state.user.find(element => element.userName === userNome);
+    }
+
+  },
+  actions: {
+    sendUsers({ commit }, user) {
+      commit('addUser', user)
+    }
+  },
+  mutations: {
+    addUser(state, user) {
+      state.users.push(user)
+    }
+  }
+}
+
+const timeline = {
+  namespaced: true,
+  state: {
+    posts: [
+      {
+        userName: 'Ron Weasley',
+        userId: 2,
+        postId: 0,
+        texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',
+        imagem: undefined
+      },
+      {
+        userName: 'Harry Potter',
+        userId:1,
+        postId:1,
+        texto: 'Hedwig Amigurumi',
+        imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
+      },
+      {
+        userName: 'me',
+        userId:0,
+        postId:1,
+        texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
+        imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
+      },
+    ]
+  },
+  getters: {
     getPosts: state => {
       return state.posts
+    },
+    getUserPosts: state => userName => {
+      return state.posts.filter(post => post.userName === userName)
     }
   },
-  actions:{
-    sendPosts({commit},post){
-      commit('addPost',post)
+  actions: {
+    sendPosts({ commit }, post) {
+      commit('addPost', post)
     }
   },
-  mutations:{
-    addPost(state,post){
+  mutations: {
+    addPost(state, post) {
       state.posts.push(post)
     }
   }
 }
 
-const store= new Vuex.Store({
-  modules:{
-    timeline: timeline
+const store = new Vuex.Store({
+  modules: {
+    timeline: timeline,
+    users: users
   },
-  plugins:[VuexPersist.plugin]
+  plugins: [VuexPersist.plugin]
 })
 
 
-const routes=[
+const routes = [
   {
-    path:'/',
-    component:Feed 
+    path: '/',
+    component: Feed
   },
   {
-    path:'/profile/',
-    component:Profile
+    path: '/profile/:name',
+    component: Profile
   },
   {
-    path:'/search/',
-    component:Search
+    path: '/search/',
+    component: Search
   }
 ]
 
@@ -73,6 +142,12 @@ const routes=[
 const router = new VueRouter({
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//   // GAMBIARRA MELHORAR DEPOIS 
+//   if(from.fullPath === '/profile/me' && to.fullPath === '/profile/profile/me') {next( '/profile/me')}
+//   else{ next()}
+// })
 
 new Vue({
   router,

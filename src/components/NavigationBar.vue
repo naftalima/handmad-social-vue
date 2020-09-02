@@ -27,7 +27,7 @@
         <v-icon>mdi-face-profile-woman</v-icon>
         </v-btn>
     </v-bottom-navigation>
-    
+
 </v-main>
 </template>
 
@@ -42,13 +42,15 @@ export default{
     },
     methods:{
         openProfile(){
-            this.$router.push('profile')
+            let userNome = "me"
+            this.$router.push(`/profile/${userNome}`)
+
         },
         openFeed(){
             this.$router.push('/')
         },
         openSearch(){
-            this.$router.push('search')
+            this.$router.push('/search/')
         }
     },
     computed:{
