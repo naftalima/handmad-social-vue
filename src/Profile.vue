@@ -5,32 +5,34 @@
     </div>
 
     <div class="profile-card">
-      <v-card>
-        <!-- <v-row justify="center">
-          <v-col> -->
+      <!-- <v-card> -->
+        <v-container>
+        <v-row justify="center">
+          <v-col>
             <v-avatar class="profile" size="120px" tile>
               <v-img
                 v-if="getUser($route.params.name).profilePic" :src="getUser($route.params.name).profilePic"
                 alt="Profile Picture"
               ></v-img>
             </v-avatar>
-          <!-- </v-col>
-          <v-col> -->
+          </v-col>
+          <v-col>
             <v-list item>
               <v-list-item-content>
                 <v-list-item-title
                   class="title"
-                >{{$route.params.name !== "me" ? $route.params.name : "Hermione" }}</v-list-item-title>
-                <v-list-item-subtitle>Hogwarts Student</v-list-item-subtitle>
+                >{{getUser($route.params.name).name}}</v-list-item-title>
+                <v-list-item-subtitle>{{getUser($route.params.name).bio}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list>
-          <!-- </v-col>
-        </v-row> -->
-      </v-card>
+          </v-col>
+        </v-row>
+        </v-container>
+      <!-- </v-card> -->
     </div>
 
     <div class="user-posters">
-      <div v-for="post in getUserPosts" :key="post">
+      <div v-for="post in getUserPosts($route.params.name)" :key="post.name">
         <PostContainer :postProp="post" />
       </div>
     </div>
@@ -40,11 +42,13 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PostContainer from "./components/PostContainer"
 import NavigationBar from "./components/NavigationBar.vue";
 
 export default {
   components: {
-    NavigationBar
+    NavigationBar,
+    PostContainer
   },
   data() {
     return {

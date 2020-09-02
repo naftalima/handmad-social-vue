@@ -60,7 +60,6 @@ export default{
             let count = 2;
             let post = {
                 userName:'me',
-                userId: 1,
                 postId: count,
                 texto: this.field,
                 imagem: this.file? URL.createObjectURL(this.file) :undefined
