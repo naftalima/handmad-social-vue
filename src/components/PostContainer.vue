@@ -22,13 +22,13 @@
 
     <v-container>
       <v-row>
-        <v-col>
+        <!-- <v-col>
           <v-card-actions>
             <v-btn icon>
               <v-icon>mdi-heart</v-icon>
             </v-btn>
           </v-card-actions>
-        </v-col>
+        </v-col> -->
         <v-col>
           <v-card-actions>
             <v-btn icon>
@@ -38,7 +38,7 @@
         </v-col>
         <v-col>
           <v-card-actions>
-            <v-btn icon>
+            <v-btn icon @click='deletar(postProp)'>
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-card-actions>
@@ -54,6 +54,9 @@ export default {
   methods: {
     openProfile(userNome) {
       this.$router.push(`/profile/${userNome}`);
+    },
+    deletar(post){
+      this.$store.dispatch('timeline/deletePosts', post);
     }
   }
 };
