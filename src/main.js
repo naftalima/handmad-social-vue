@@ -3,6 +3,7 @@ import App from './App.vue'
 import Feed from './Feed.vue'
 import Profile from './Profile.vue'
 import Search from './Search.vue'
+// import Login from './Login.vue'
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
@@ -28,22 +29,25 @@ const users = {
     user: [
       {
         userName: 'ronron',
-        name:'Ron Weasley',
-        bio: 'Sou um Weasley',
-        profilePic: "https://i.ytimg.com/vi/RvdpcOwumlY/hqdefault.jpg"
+        email: "ronron@hogwarts.com",
+        name: 'Ron Weasley',
+        bio: '',
+        profilePic: "https://i.gifer.com/47UM.gif"
       },
       {
         userName: 'harrypttr',
-        name:'Harry',
+        email: "harrypttr@gmail.com",
+        name: 'Harry',
         bio: 'eu sou só harry',
         profilePic: "https://i.pinimg.com/originals/94/64/59/94645992bdb14a27ce21f8c3e792d9ba.jpg"
       },
       {
         userName: 'me',
-        name:'MIone',
+        email: "mione@hotmail.com",
+        name: 'Mione',
         bio: 'hastag liberdade aos elfos',
         profilePic: "https://i.pinimg.com/originals/08/7b/7c/087b7c08e037a803ba77a2db24eb8cb0.jpg"
-      }, 
+      },
     ]
   },
   getters: {
@@ -79,13 +83,13 @@ const timeline = {
       },
       {
         userName: 'harrypttr',
-        postId:1,
+        postId: 1,
         texto: 'Hedwig Amigurumi',
         imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
       },
       {
         userName: 'me',
-        postId:2,
+        postId: 2,
         texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
         imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
       },
@@ -103,17 +107,17 @@ const timeline = {
     sendPosts({ commit }, post) {
       commit('addPost', post)
     },
-    deletePosts({commit},  post){
-      commit('delPost',post)
+    deletePosts({ commit }, post) {
+      commit('delPost', post)
     }
   },
   mutations: {
     addPost(state, post) {
       state.posts.push(post)
     },
-    delPost(state,post){
+    delPost(state, post) {
       var index = state.posts.findIndex(p => p.postId == post.postId)
-      state.posts.splice(index,1)
+      state.posts.splice(index, 1)
     }
   }
 }

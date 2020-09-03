@@ -51,24 +51,23 @@ export default{
         return{
             name: 'Handmade',
             file: undefined,
+            count:3,
             field:'',
             rules: [value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
         }
     },
     methods:{
         send(){
-            let count = 3;
             let post = {
                 userName:'me',
-                postId: count,
+                postId: this.count,
                 texto: this.field,
                 imagem: this.file? URL.createObjectURL(this.file) :undefined
             };
-            // this.posts.push(post)
             this.$store.dispatch('timeline/sendPosts',post);
             this.field= '';
             this.file = undefined;
-            count++;
+            this.count++;
         }
     },
     computed:{
