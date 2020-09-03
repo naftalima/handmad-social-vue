@@ -8,9 +8,11 @@ import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import VueRouter from 'vue-router'
+import Firebase from './firebase'
 
 Vue.config.productionTip = false
 
+Vue.use(Firebase)
 Vue.use(Vuex)
 Vue.use(VueRouter)
 

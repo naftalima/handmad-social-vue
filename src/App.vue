@@ -7,6 +7,9 @@
 <script>
 export default{
   name: "App",
+  created(){
+    console.log(this.$firebase)
+  }
 };
 </script>
 
