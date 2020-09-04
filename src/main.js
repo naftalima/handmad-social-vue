@@ -44,9 +44,9 @@ const users = {
         profilePic: "https://i.pinimg.com/originals/94/64/59/94645992bdb14a27ce21f8c3e792d9ba.jpg"
       },
       {
-        userName: 'Hermione Grange',
+        userName: 'mione',
         email: "mione@hotmail.com",
-        name: 'Mione',
+        name: 'Hermione Granger',
         bio: 'hastag liberdade aos elfos',
         profilePic: "https://i.pinimg.com/originals/08/7b/7c/087b7c08e037a803ba77a2db24eb8cb0.jpg"
       },
@@ -123,26 +123,26 @@ const users = {
 const timeline = {
   namespaced: true,
   state: {
-    posts: [
-      {
-        userName: 'ronron',
-        postId: 0,
-        texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',
-        imagem: undefined
-      },
-      {
-        userName: 'harrypttr',
-        postId: 1,
-        texto: 'Hedwig Amigurumi',
-        imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
-      },
-      {
-        userName: 'me',
-        postId: 2,
-        texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
-        imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
-      },
-    ]
+    // posts: [
+    //   {
+    //     userName: 'ronron',
+    //     postId: 0,
+    //     texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',
+    //     imagem: undefined
+    //   },
+    //   {
+    //     userName: 'harrypttr',
+    //     postId: 1,
+    //     texto: 'Hedwig Amigurumi',
+    //     imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
+    //   },
+    //   {
+    //     userName: 'me',
+    //     postId: 2,
+    //     texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
+    //     imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
+    //   },
+    // ]
   },
   getters: {
     // getPosts: state => {

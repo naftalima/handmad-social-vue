@@ -5,13 +5,13 @@
     </div>
 
     <div class="profile-card">
-      <!-- <v-card> -->
       <v-container>
         <v-row justify="center">
           <v-col>
             <v-avatar class="profile" size="120px" tile>
               <v-img
-                v-if="getUser($route.params.name).profilePic" :src="getUser($route.params.name).profilePic"
+                v-if="this.user.profilePic"
+                :src="this.user.profilePic"
                 alt="Profile Picture"
               ></v-img>
             </v-avatar>
@@ -19,18 +19,18 @@
           <v-col>
             <v-list item>
               <v-list-item-content>
-                <v-list-item-title class="title">{{getUser($route.params.name).name}}</v-list-item-title>
-                <v-list-item-subtitle>{{getUser($route.params.name).bio? getUser($route.params.name).bio: "Hey there! I am using Handmade" }}</v-list-item-subtitle>
+                <!-- <v-list-item-title class="title">{{getUser($route.params.name).name}}</v-list-item-title> -->
+                <v-list-item-title class="title">{{this.user.name}}</v-list-item-title>
+                <v-list-item-subtitle>{{this.user.bio ? this.user.bio:"Hey there! I am using Handmade" }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list>
           </v-col>
         </v-row>
       </v-container>
-      <!-- </v-card> -->
     </div>
 
     <div class="user-posters">
-      <div v-for="post in getUserPosts($route.params.name).slice().reverse()" :key="post.name">
+      <div v-for="post in posts" :key="post.name">
         <PostContainer :postProp="post" />
       </div>
     </div>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { firestore } from "./firebase";
 import { mapGetters } from "vuex";
 import PostContainer from "./components/PostContainer";
 import NavigationBar from "./components/NavigationBar.vue";
@@ -49,12 +50,28 @@ export default {
   },
   data() {
     return {
-      name: "Handmade"
+      posts: [],
+      user: {}
     };
   },
   computed: {
-    ...mapGetters("timeline", ["getPosts", "getUserPosts"]),
     ...mapGetters("users", ["getUser"])
+  },
+  created() {
+    firestore.collection("timeline").where("userName","==",this.$route.params.name).orderBy("createTime",'desc')
+    .onSnapshot(querySnapshot => {
+      this.posts = [];
+      querySnapshot.forEach(doc => {
+        this.posts.push(doc.data());
+      });
+    });
+    firestore.collection("users").where("userName","==",this.$route.params.name)
+    .onSnapshot(querySnapshot => {
+      this.user = [];
+      querySnapshot.forEach(doc => {
+        this.user = doc.data();
+      });
+    });
   }
 };
 </script>
@@ -64,7 +81,7 @@ export default {
   width: 100%;
   padding-top: 64px;
 }
-.user-posters{
+.user-posters {
   padding-bottom: 56px;
   width: 100%;
 }

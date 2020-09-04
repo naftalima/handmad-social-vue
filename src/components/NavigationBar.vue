@@ -43,7 +43,7 @@ export default{
     methods:{
         openProfile(){
             // let userNome = getUserLogged.userName
-            let userNome = "me"
+            let userNome = "mione"
             this.$router.push(`/profile/${userNome}`)
 
         },
@@ -55,7 +55,6 @@ export default{
         }
     },
     computed:{
-        ...mapGetters('timeline',['getPosts']),
         ...mapGetters('users',['getUserLogged'])
     },
 }

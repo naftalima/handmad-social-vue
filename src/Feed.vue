@@ -49,7 +49,6 @@ export default{
     },
     data (){
         return{
-            name: 'Handmade',
             file: undefined,
             count:3,
             field:'',
@@ -65,7 +64,6 @@ export default{
                 userName: "me",
                 postId: this.count,
                 texto: this.field,
-                // imagem: this.file? URL.createObjectURL(this.file) :undefined
                 imagem: this.file
                 };
                 this.$store.dispatch('timeline/sendPosts',post);
