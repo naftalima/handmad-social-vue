@@ -1,7 +1,8 @@
 <template>
   <v-main>
     <div class="navigation-bar">
-      <NavigationBar />
+      <NavigationBar  :userLoggedProp = userLogged />
+      <!-- <NavigationBar/> -->
     </div>
 
     <div class="input">
@@ -28,9 +29,8 @@
     </div>
 
     <div class="post-container">
-      <!-- <div v-for='post in getPosts.slice().reverse() ' :key='post.name'> -->
       <div v-for="post in posts " :key="post.name">
-        <PostContainer :postProp="post" />
+        <PostContainer :postProp="post" :userLoggedProp="userLogged" />
       </div>
     </div>
   </v-main>
@@ -50,9 +50,9 @@ export default{
     data (){
         return{
             file: undefined,
-            // count:3,
             field:'',
             posts: [],
+            userLogged:{},
             rules: [value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
         }
     },
@@ -60,9 +60,7 @@ export default{
         send(){
             if (this.file !== '' || this.file !== undefined){
                 let post = {
-                // userName: this.getUser.userName,
-                userName: "mione",
-                // postId: this.count,
+                userName: this.userLogged.userName,
                 postId: `${new Date().toUTCString()}` ,
                 texto: this.field,
                 imagem: this.file
@@ -70,13 +68,12 @@ export default{
                 this.$store.dispatch('timeline/sendPosts',post);
                 this.field= '';
                 this.file = undefined;
-                // this.count++;
                 }
         }
     },
     computed:{
         ...mapGetters('timeline',['getPosts']),
-        ...mapGetters('users',['getUser'])
+        ...mapGetters('users',['getUserLogged'])
     },
     created(){
         firestore.collection("timeline").orderBy("createTime",'desc')
@@ -85,7 +82,16 @@ export default{
             querySnapshot.forEach((doc)=>{
                 this.posts.push(doc.data())
             })
-        })         
+        }),
+        firestore.collection("users").where("email","==",this.getUserLogged)
+        .onSnapshot(querySnapshot => {
+          this.userLogged={};
+          querySnapshot.forEach(doc=>{
+            this.userLogged = doc.data();
+            console.log(this.userLogged)
+            console.log(typeof(this.userLogged))
+          })
+        })   
     }
 }
 </script>

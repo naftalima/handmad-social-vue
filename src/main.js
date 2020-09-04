@@ -8,7 +8,7 @@ import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import VueRouter from 'vue-router'
-import Firebase, { auth, firestore, FieldValue, storage} from './firebase' 
+import Firebase, { auth, firestore, FieldValue, storage } from './firebase'
 
 Vue.config.productionTip = false
 
@@ -28,93 +28,67 @@ const VuexPersist = new VuexPersistence({
 const users = {
   namespaced: true,
   state: {
-    user: [
-      {
-        userName: 'ronron',
-        email: "ronron@hogwarts.com",
-        name: 'Ron Weasley',
-        bio: '',
-        profilePic: "https://i.gifer.com/47UM.gif"
-      },
-      {
-        userName: 'harrypttr',
-        email: "harrypttr@gmail.com",
-        name: 'Harry',
-        bio: 'eu sou só harry',
-        profilePic: "https://i.pinimg.com/originals/94/64/59/94645992bdb14a27ce21f8c3e792d9ba.jpg"
-      },
-      {
-        userName: 'mione',
-        email: "mione@hotmail.com",
-        name: 'Hermione Granger',
-        bio: 'hastag liberdade aos elfos',
-        profilePic: "https://i.pinimg.com/originals/08/7b/7c/087b7c08e037a803ba77a2db24eb8cb0.jpg"
-      },
-    ],
-    usuario:null,
-    loginError:null
+    usuario: null,
+    loginError: null
   },
   getters: {
     getUsers: state => {
       return state.user
     },
-    getUser: state => userNome => {
-      return state.user.find(element => element.userName === userNome);
-    },
     getUserLogged: state => {
-      return state.user.find(element => element.email == state.usuario.email)
+      return state.usuario.email
     }
   },
   actions: {
     sendUsers({ commit }, user) {
       commit('addUser', user)
     },
-    async createAcc({ commit }, payload){
-      const {email,password}= payload
+    async createAcc({ commit }, payload) {
+      const { email, password, username } = payload
       auth.createUserWithEmailAndPassword(email, password)
-      .then((res)=>{
-        console.log(res)
-        commit('setUser',res.user)
-        router.push('/')
-      })
-      .catch((err)=>{
-        commit('setLoginError',err)
-        console.error(err)
-      })
+        .then((res) => {
+          console.log(res)
+          // auth usuario
+          commit('setUser', res.user) 
+          //add usario to users collection
+          var cliente = {
+            email: email,
+            userName: username,
+            bio: '',
+            profilePic: '',
+            name: '',
+          }
+          firestore.collection("users").add(cliente)
+          // open feed
+          router.push('/feed/')
+        })
+        .catch((err) => {
+          commit('setLoginError', err)
+          console.error(err)
+        })
     },
-    async login({commit},payload ){
-      const {email, password} =payload
-      auth.signInWithEmailAndPassword(email,password)
-      .then((res)=>{
-        console.log(res)
-        commit('setUser',res.user)
-        router.push('/')
-      })
-      .catch((err)=>{
-        commit('setLoginError',err)
-        console.error(err)
-      })
+    async login({ commit }, payload) {
+      const { email, password } = payload
+      auth.signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          console.log(res)
+          commit('setUser', res.user)
+          router.push('/feed')
+        })
+        .catch((err) => {
+          commit('setLoginError', err)
+          console.error(err)
+        })
     }
   },
   mutations: {
-    addUser(state, user) {
-      state.users.push(user)
-    },
-    setUser(state,user){
-        state.usuario = user
-      },
-    // setUser(state,user){
-    //   let usuario =
-    //   {
-    //    userName: undefined
-    //    email: user.email
-    //    name: undefined
-    //    bio: undefined 
-    //    profilePic: undefined
-    //   }
-    //   state.usuario = user
+    // addUser(state,user, username) {
     // },
-    setLoginError(state, error){
+    setUser(state, user) {
+      state.usuario = user
+      // console.log(state.usuario.email)
+    },
+    setLoginError(state, error) {
       state.loginError = error
     }
   }
@@ -157,12 +131,12 @@ const timeline = {
     //   commit('addPost', post)
     // },
 
-/* eslint-disable */
-  async sendPosts({},post){
-/* eslint-enable */
-      try{
+    /* eslint-disable */
+    async sendPosts({ }, post) {
+      /* eslint-enable */
+      try {
         post.createTime = FieldValue.serverTimestamp()
-        if(post.imagem){
+        if (post.imagem) {
           const pic = await storage.ref().child(`${post.userName}/${new Date().toUTCString()}`).put(post.imagem)
           const url = await pic.ref.getDownloadURL()
           post.imagem = url
@@ -170,7 +144,7 @@ const timeline = {
         }
         await firestore.collection('timeline').add(post)
         // console.log("funcionou")
-      }catch(err){
+      } catch (err) {
         console.log(err)
       }
     },
@@ -200,11 +174,11 @@ const store = new Vuex.Store({
 
 const routes = [
   {
-    path: '/login/',
+    path: '/',
     component: Login
   },
   {
-    path: '/',
+    path: '/feed/',
     component: Feed
   },
   {

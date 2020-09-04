@@ -19,19 +19,13 @@
     >{{postProp.userName ? postProp.userName : 'Anônimo'}}</v-card-title>
 
     <v-card-text class="text--primary">{{postProp.texto}}</v-card-text>
-<!-- 
+
+
     <v-container
-      v-if="$route.params.name === postProp.userName"
-    > -->
-    <v-container>
+      v-if="userLoggedProp.userName == postProp.userName"
+    >
+    <!-- <v-container> -->
       <v-row>
-        <!-- <v-col>
-          <v-card-actions>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-col> -->
         <v-col>
           <v-card-actions>
             <v-btn icon>
@@ -53,7 +47,7 @@
 
 <script>
 export default {
-  props: ["postProp"],
+  props: ["postProp","userLoggedProp"],
   methods: {
     openProfile(userNome) {
       this.$router.push(`/profile/${userNome}`);
@@ -61,6 +55,6 @@ export default {
     deletar(post){
       this.$store.dispatch('timeline/deletePosts', post);
     }
-  }
+  },
 };
 </script>

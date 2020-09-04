@@ -7,7 +7,7 @@
       <v-col>
         <v-text-field @keyup.enter="send()" v-model="email" label="email" solo hide-details></v-text-field>
 
-        <v-text-field @keyup.enter="send()" v-model="password" label="senha" solo hide-details></v-text-field>
+        <v-text-field @keyup.enter="send()" v-model="password" label="senha" type="password" solo hide-details></v-text-field>
 
         <v-btn color="primary" @click="login()">Entrar</v-btn>
 
@@ -17,6 +17,7 @@
       <v-dialog v-model="createAccDialog">
         <v-card>
           <v-col>
+            <v-text-field label="username" v-model="username"></v-text-field>
             <v-text-field label="Email" v-model="newEmail"></v-text-field>
             <v-text-field label="Senha" type="password" v-model="newPassword"></v-text-field>
             <v-btn color="primary" @click="createAcc()"> Criar</v-btn>
@@ -33,6 +34,8 @@ export default {
   data() {
     return {
       createAccDialog:false,
+
+      username:"",
       newEmail:'',
       email: "",
       newPassword:"",
@@ -41,7 +44,7 @@ export default {
   },
   methods:{
     createAcc(){
-      this.$store.dispatch("users/createAcc",{email:this.newEmail, password:this.newPassword})
+      this.$store.dispatch("users/createAcc",{email:this.newEmail, password:this.newPassword, username: this.username})
       this.newEmail = '';
       this.newPassword = '';
       // this.createAccDialog = false;
