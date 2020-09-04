@@ -34,7 +34,6 @@ export default {
   data() {
     return {
       createAccDialog:false,
-
       username:"",
       newEmail:'',
       email: "",

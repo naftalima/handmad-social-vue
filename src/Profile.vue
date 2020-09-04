@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <div class="navigation-bar">
-      <NavigationBar :userLoggedProp = userLogged />
+      <NavigationBar :userLoggedProp="userLogged" />
       <!-- <NavigationBar />  -->
     </div>
 
@@ -31,8 +31,8 @@
     </div>
 
     <div class="user-posters">
-      <div v-for="post in posts" :key="post.name">
-        <PostContainer :postProp="post" :userLoggedProp = userLogged />
+      <div v-for="post of posts" :key="post.name">
+        <PostContainer :postProp="post" :userLoggedProp="userLogged" />
       </div>
     </div>
   </v-main>
@@ -60,11 +60,13 @@ export default {
     ...mapGetters("users", ["getUser"])
   },
   created() {
-    firestore.collection("timeline").where("userName","==",this.$route.params.name).orderBy("createTime",'desc')
+    firestore.collection("timeline").where("userName","==",this.$route.params.name)
+    .orderBy("createTime",'desc')
     .onSnapshot(querySnapshot => {
       this.posts = [];
       querySnapshot.forEach(doc => {
         this.posts.push(doc.data());
+        console.log(doc.data())
       });
     });
     firestore.collection("users").where("userName","==",this.$route.params.name)

@@ -20,15 +20,14 @@
 
     <v-card-text class="text--primary">{{postProp.texto}}</v-card-text>
 
-
+    <!-- <span>{{postProp}}</span> -->
     <v-container
-      v-if="userLoggedProp.userName == postProp.userName"
+      v-if="userLoggedProp.userName === postProp.userName"
     >
-    <!-- <v-container> -->
       <v-row>
         <v-col>
           <v-card-actions>
-            <v-btn icon>
+            <v-btn icon @click="createAccDialog = true">
               <v-icon>mdi-lead-pencil</v-icon>
             </v-btn>
           </v-card-actions>
@@ -41,6 +40,16 @@
           </v-card-actions>
         </v-col>
       </v-row>
+
+      <v-dialog v-model="createAccDialog">
+        <v-card>
+          <v-col>
+            <v-text-field label="edit" v-model="newTexto"></v-text-field>
+            <v-btn icon @click="edit(postProp)"><v-icon>mdi-send</v-icon></v-btn>
+          </v-col>
+        </v-card>
+      </v-dialog>
+
     </v-container>
   </v-card>
 </template>
@@ -48,12 +57,22 @@
 <script>
 export default {
   props: ["postProp","userLoggedProp"],
+  data(){
+    return{
+      createAccDialog: false,
+      newTexto: ''
+    }
+  },
   methods: {
     openProfile(userNome) {
       this.$router.push(`/profile/${userNome}`);
     },
     deletar(post){
       this.$store.dispatch('timeline/deletePosts', post);
+    },
+    edit(post){
+      this.$store.dispatch('timeline/editPosts', {post: post, newT: this.newTexto})
+      this.newTexto = ''
     }
   },
 };

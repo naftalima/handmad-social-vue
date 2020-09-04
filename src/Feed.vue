@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <div class="navigation-bar">
-      <NavigationBar  :userLoggedProp = userLogged />
+      <NavigationBar  :userLoggedProp="userLogged" />
       <!-- <NavigationBar/> -->
     </div>
 
@@ -29,7 +29,7 @@
     </div>
 
     <div class="post-container">
-      <div v-for="post in posts " :key="post.name">
+      <div v-for="post of posts " :key="post.name">
         <PostContainer :postProp="post" :userLoggedProp="userLogged" />
       </div>
     </div>
@@ -52,7 +52,7 @@ export default{
             file: undefined,
             field:'',
             posts: [],
-            userLogged:{},
+            userLogged:{userName:''},
             rules: [value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
         }
     },

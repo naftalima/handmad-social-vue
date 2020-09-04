@@ -24,7 +24,6 @@ const VuexPersist = new VuexPersistence({
   ]
 })
 
-
 const users = {
   namespaced: true,
   state: {
@@ -49,7 +48,7 @@ const users = {
         .then((res) => {
           console.log(res)
           // auth usuario
-          commit('setUser', res.user) 
+          commit('setUser', res.user)
           //add usario to users collection
           var cliente = {
             email: email,
@@ -82,11 +81,8 @@ const users = {
     }
   },
   mutations: {
-    // addUser(state,user, username) {
-    // },
     setUser(state, user) {
       state.usuario = user
-      // console.log(state.usuario.email)
     },
     setLoginError(state, error) {
       state.loginError = error
@@ -97,40 +93,13 @@ const users = {
 const timeline = {
   namespaced: true,
   state: {
-    // posts: [
-    //   {
-    //     userName: 'ronron',
-    //     postId: 0,
-    //     texto: 'Qual a diferença faz o tamanho da agulha para amigurumi?',
-    //     imagem: undefined
-    //   },
-    //   {
-    //     userName: 'harrypttr',
-    //     postId: 1,
-    //     texto: 'Hedwig Amigurumi',
-    //     imagem: "https://i.pinimg.com/736x/ec/40/bd/ec40bdef4177aef80e8f0a627b2fcc66.jpg"
-    //   },
-    //   {
-    //     userName: 'me',
-    //     postId: 2,
-    //     texto: '#FALE (Fundação de Apoio à Libertação dos Elfos-Domésticos)',
-    //     imagem: "https://img.elo7.com.br/product/zoom/2F297D2/dobby-amigurumi-harry-potter.jpg"
-    //   },
-    // ]
   },
   getters: {
-    // getPosts: state => {
-    //   return state.posts
-    // },
-    getUserPosts: state => userName => {
-      return state.posts.filter(post => post.userName === userName)
-    }
+    // getUserPosts: state => userName => {
+    //   return state.posts.filter(post => post.userName === userName)
+    // }
   },
   actions: {
-    // sendPosts({ commit }, post) {
-    //   commit('addPost', post)
-    // },
-
     /* eslint-disable */
     async sendPosts({ }, post) {
       /* eslint-enable */
@@ -140,26 +109,44 @@ const timeline = {
           const pic = await storage.ref().child(`${post.userName}/${new Date().toUTCString()}`).put(post.imagem)
           const url = await pic.ref.getDownloadURL()
           post.imagem = url
-          // console.log("carregou")
         }
         await firestore.collection('timeline').add(post)
-        // console.log("funcionou")
       } catch (err) {
         console.log(err)
       }
     },
-    deletePosts({ commit }, post) {
-      commit('delPost', post)
+    /* eslint-disable */
+    async deletePosts({ }, post) {
+      /* eslint-enable */
+      var idDoc = firestore.collection("timeline").where("postId", "==", post.postId)
+      idDoc.get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          doc.ref.delete();
+        })
+      })
+    },
+    /* eslint-disable */
+    async editPosts({ }, post ,newTexto) {
+      /* eslint-enable */
+      var idDoc = firestore.collection("timeline").where("postId", "==", post.postId)
+      idDoc.get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          doc.ref.update({ texto: newTexto })
+        }).then(()=>{
+          console.log("texto update")
+        })
+      })
     }
+
+    // deletePosts({ commit }, post) {
+    //   commit('delPost', post)
+    // }
   },
   mutations: {
-    addPost(state, post) {
-      state.posts.push(post)
-    },
-    delPost(state, post) {
-      var index = state.posts.findIndex(p => p.postId == post.postId)
-      state.posts.splice(index, 1)
-    }
+    // delPost(state, post) {
+    //   var index = state.posts.findIndex(p => p.postId == post.postId)
+    //   state.posts.splice(index, 1)
+    // }
   }
 }
 
@@ -195,12 +182,6 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
-// router.beforeEach((to, from, next) => {
-//   // GAMBIARRA MELHORAR DEPOIS 
-//   if(from.fullPath === '/profile/me' && to.fullPath === '/profile/profile/me') {next( '/profile/me')}
-//   else{ next()}
-// })
 
 new Vue({
   router,
