@@ -50,7 +50,7 @@ export default{
     data (){
         return{
             file: undefined,
-            count:3,
+            // count:3,
             field:'',
             posts: [],
             rules: [value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!']
@@ -61,15 +61,16 @@ export default{
             if (this.file !== '' || this.file !== undefined){
                 let post = {
                 // userName: this.getUser.userName,
-                userName: "me",
-                postId: this.count,
+                userName: "mione",
+                // postId: this.count,
+                postId: `${new Date().toUTCString()}` ,
                 texto: this.field,
                 imagem: this.file
                 };
                 this.$store.dispatch('timeline/sendPosts',post);
                 this.field= '';
                 this.file = undefined;
-                this.count++;
+                // this.count++;
                 }
         }
     },
