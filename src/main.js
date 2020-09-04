@@ -3,12 +3,12 @@ import App from './App.vue'
 import Feed from './Feed.vue'
 import Profile from './Profile.vue'
 import Search from './Search.vue'
-// import Login from './Login.vue'
+import Login from './Login.vue'
 import vuetify from './plugins/vuetify';
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import VueRouter from 'vue-router'
-import Firebase from './firebase'
+import Firebase, { auth, firestore, FieldValue, storage} from './firebase' 
 
 Vue.config.productionTip = false
 
@@ -44,13 +44,15 @@ const users = {
         profilePic: "https://i.pinimg.com/originals/94/64/59/94645992bdb14a27ce21f8c3e792d9ba.jpg"
       },
       {
-        userName: 'me',
+        userName: 'Hermione Grange',
         email: "mione@hotmail.com",
         name: 'Mione',
         bio: 'hastag liberdade aos elfos',
         profilePic: "https://i.pinimg.com/originals/08/7b/7c/087b7c08e037a803ba77a2db24eb8cb0.jpg"
       },
-    ]
+    ],
+    usuario:null,
+    loginError:null
   },
   getters: {
     getUsers: state => {
@@ -58,17 +60,62 @@ const users = {
     },
     getUser: state => userNome => {
       return state.user.find(element => element.userName === userNome);
+    },
+    getUserLogged: state => {
+      return state.user.find(element => element.email == state.usuario.email)
     }
-
   },
   actions: {
     sendUsers({ commit }, user) {
       commit('addUser', user)
+    },
+    async createAcc({ commit }, payload){
+      const {email,password}= payload
+      auth.createUserWithEmailAndPassword(email, password)
+      .then((res)=>{
+        console.log(res)
+        commit('setUser',res.user)
+        router.push('/')
+      })
+      .catch((err)=>{
+        commit('setLoginError',err)
+        console.error(err)
+      })
+    },
+    async login({commit},payload ){
+      const {email, password} =payload
+      auth.signInWithEmailAndPassword(email,password)
+      .then((res)=>{
+        console.log(res)
+        commit('setUser',res.user)
+        router.push('/')
+      })
+      .catch((err)=>{
+        commit('setLoginError',err)
+        console.error(err)
+      })
     }
   },
   mutations: {
     addUser(state, user) {
       state.users.push(user)
+    },
+    setUser(state,user){
+        state.usuario = user
+      },
+    // setUser(state,user){
+    //   let usuario =
+    //   {
+    //    userName: undefined
+    //    email: user.email
+    //    name: undefined
+    //    bio: undefined 
+    //    profilePic: undefined
+    //   }
+    //   state.usuario = user
+    // },
+    setLoginError(state, error){
+      state.loginError = error
     }
   }
 }
@@ -98,16 +145,34 @@ const timeline = {
     ]
   },
   getters: {
-    getPosts: state => {
-      return state.posts
-    },
+    // getPosts: state => {
+    //   return state.posts
+    // },
     getUserPosts: state => userName => {
       return state.posts.filter(post => post.userName === userName)
     }
   },
   actions: {
-    sendPosts({ commit }, post) {
-      commit('addPost', post)
+    // sendPosts({ commit }, post) {
+    //   commit('addPost', post)
+    // },
+
+/* eslint-disable */
+  async sendPosts({},post){
+/* eslint-enable */
+      try{
+        post.createTime = FieldValue.serverTimestamp()
+        if(post.imagem){
+          const pic = await storage.ref().child(`${post.userName}/${new Date().toUTCString()}`).put(post.imagem)
+          const url = await pic.ref.getDownloadURL()
+          post.imagem = url
+          // console.log("carregou")
+        }
+        await firestore.collection('timeline').add(post)
+        // console.log("funcionou")
+      }catch(err){
+        console.log(err)
+      }
     },
     deletePosts({ commit }, post) {
       commit('delPost', post)
@@ -134,6 +199,10 @@ const store = new Vuex.Store({
 
 
 const routes = [
+  {
+    path: '/login/',
+    component: Login
+  },
   {
     path: '/',
     component: Feed

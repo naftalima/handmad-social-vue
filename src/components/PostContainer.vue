@@ -19,7 +19,10 @@
     >{{postProp.userName ? postProp.userName : 'Anônimo'}}</v-card-title>
 
     <v-card-text class="text--primary">{{postProp.texto}}</v-card-text>
-
+<!-- 
+    <v-container
+      v-if="$route.params.name === postProp.userName"
+    > -->
     <v-container>
       <v-row>
         <!-- <v-col>

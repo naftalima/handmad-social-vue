@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     ...mapGetters("timeline", ["getPosts", "getUserPosts"]),
-    ...mapGetters("users", ["getUsers", "getUser"])
+    ...mapGetters("users", ["getUser"])
   }
 };
 </script>

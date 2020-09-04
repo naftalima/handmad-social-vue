@@ -1,17 +1,30 @@
 <template>
   <v-main>
-    <v-text-field @keyup.enter="send()" v-model="email" label="email" solo hide-details></v-text-field>
-
-    <v-text-field @keyup.enter="send()" v-model="senha" label="senha" solo hide-details></v-text-field>
-
-    <v-row>
+    <v-container fluid fill-height>
       <v-col>
-        <v-btn icon x-large color-text="blue">Login</v-btn>
+        <v-img width="200px" height="200px" src="./assets/handmade.png"></v-img>
       </v-col>
       <v-col>
-        <v-btn icon x-large color-text="blue">Cadastrar</v-btn>
+        <v-text-field @keyup.enter="send()" v-model="email" label="email" solo hide-details></v-text-field>
+
+        <v-text-field @keyup.enter="send()" v-model="password" label="senha" solo hide-details></v-text-field>
+
+        <v-btn color="primary" @click="login()">Entrar</v-btn>
+
+        <v-btn color="primary" @click="createAccDialog= true">Cadastrar</v-btn>
       </v-col>
-    </v-row>
+
+      <v-dialog v-model="createAccDialog">
+        <v-card>
+          <v-col>
+            <v-text-field label="Email" v-model="newEmail"></v-text-field>
+            <v-text-field label="Senha" type="password" v-model="newPassword"></v-text-field>
+            <v-btn color="primary" @click="createAcc()"> Criar</v-btn>
+          </v-col>
+        </v-card>
+      </v-dialog>
+
+    </v-container>
   </v-main>
 </template>
 
@@ -19,9 +32,25 @@
 export default {
   data() {
     return {
+      createAccDialog:false,
+      newEmail:'',
       email: "",
-      senha: ""
-    };
+      newPassword:"",
+      password: "",
+    }
+  },
+  methods:{
+    createAcc(){
+      this.$store.dispatch("users/createAcc",{email:this.newEmail, password:this.newPassword})
+      this.newEmail = '';
+      this.newPassword = '';
+      // this.createAccDialog = false;
+    },
+    login(){
+      this.$store.dispatch("users/login",{email:this.email, password:this.password});
+      this.email = '';
+      this.password = '';
+    }
   }
 };
 </script>
